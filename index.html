@@ -60,7 +60,7 @@
 <body>
 
 <div class="container">
-  <h2> شاركنا بملاحظاتك </h2>
+  <h2>شاركنا بملاحظاتك</h2>
   <form id="feedbackForm">
     <textarea id="feedback" placeholder="اكتب ملاحظاتك هنا..."></textarea>
     <button type="submit">إرسال</button>
@@ -73,6 +73,7 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
     e.preventDefault();
     let message = document.getElementById('feedback').value.trim();
     let statusEl = document.getElementById('status');
+    let submitButton = e.target.querySelector('button');
 
     if(message === "") {
         statusEl.style.color = "red";
@@ -80,12 +81,18 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
         return;
     }
 
+    // إضافة مقدمة احترافية للرسالة
+    let formattedMessage = `مشاركة هامة من شركاء النجاح:\n${message}`;
+
     // رقم خدمة العملاء
     let phoneNumber = "966564884782"; 
-    let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(formattedMessage)}`;
     
     // فتح رابط الواتس
     window.open(whatsappURL, '_blank');
+
+    // تعطيل الزر مؤقتًا
+    submitButton.disabled = true;
 
     // رسالة تأكيد داخل الصفحة
     statusEl.style.color = "green";
@@ -93,6 +100,12 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
 
     // مسح النص
     document.getElementById('feedback').value = "";
+
+    // إعادة تفعيل الزر وإخفاء الرسالة بعد 5 ثواني
+    setTimeout(() => {
+        statusEl.textContent = "";
+        submitButton.disabled = false;
+    }, 5000);
 });
 </script>
 
